@@ -1,11 +1,18 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const API = import.meta.env.VITE_API_URL
+
+const AREAS = [
+  'Vereeniging', 'Vanderbijlpark', 'Meyerton', 'Sasolburg', 'Henley on Klip',
+  'Walkerville', 'Midvaal', 'Three Rivers', 'Roshnee', 'Ennerdale',
+  'Sebokeng', 'Evaton', 'Sharpeville', 'Boipatong', 'Bophelong',
+  'Zamdela', 'Refengkgotso', 'Orange Farm', 'Other',
+]
 
 const FIELDS = [
   { name: 'title', label: 'What needs doing?', ph: 'e.g. Paint two bedrooms', max: 60 },
   { name: 'description', label: 'Details', ph: 'What, how big, what to bring', max: 300, area: true },
-  { name: 'area', label: 'Area', ph: 'e.g. Meyerton', max: 40 },
+  { name: 'area', label: 'Area', options: AREAS },
   { name: 'pay', label: 'Pay', ph: 'e.g. R600 / day', max: 20 },
   { name: 'when_text', label: 'When', ph: 'e.g. Saturday morning', max: 30 },
   { name: 'poster_name', label: 'Your name', ph: '', max: 30 },
@@ -54,7 +61,6 @@ export default function App() {
     load()
   }, [])
 
-  const areas = useMemo(() => [...new Set(jobs.map((j) => j.area))].sort(), [jobs])
   const shown = jobs.filter(
     (j) =>
       (!area || j.area === area) &&
@@ -86,7 +92,7 @@ export default function App() {
     }
   }
 
-  const input = 'w-full min-h-11 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2'
+  const input = 'w-full min-h-11 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-base'
 
   return (
     <div className="min-h-screen bg-slate-200 text-slate-900">
@@ -120,7 +126,7 @@ export default function App() {
             onChange={(e) => setArea(e.target.value)}
           >
             <option value="">All areas</option>
-            {areas.map((a) => (
+            {AREAS.map((a) => (
               <option key={a}>{a}</option>
             ))}
           </select>
@@ -156,7 +162,9 @@ export default function App() {
                   Posted by {j.poster_name} · {ago(j.created_at)}
                 </p>
               </div>
-              <div className="mx-3 border-t-2 border-dashed border-slate-300" />
+              <div className="relative mx-3 border-t-2 border-dashed border-slate-300">
+                <span className="absolute -top-3 left-0 bg-white px-0.5 text-sm text-slate-500">✂</span>
+              </div>
               <div className="p-4">
                 <a
                   href={waLink(j)}
@@ -187,6 +195,18 @@ export default function App() {
                   value={form[f.name]}
                   onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
                 />
+              ) : f.options ? (
+                <select
+                  className={input}
+                  required
+                  value={form[f.name]}
+                  onChange={(e) => setForm({ ...form, [f.name]: e.target.value })}
+                >
+                  <option value="">Choose area</option>
+                  {f.options.map((a) => (
+                    <option key={a}>{a}</option>
+                  ))}
+                </select>
               ) : (
                 <input
                   className={input}
