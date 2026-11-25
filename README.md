@@ -2,7 +2,7 @@
 
 A lean job board for **piece jobs** (short, casual work) in the Vaal region of South Africa. Someone posts a job, a worker taps **I’m interested**, and the conversation moves straight to WhatsApp.
 
-**Live demo:** [add link after deploy]
+**Live demo:** ([Live Demo](https://piece-jobs.vercel.app))
 **Built by:** Jabulani ([@Jabutec](https://github.com/Jabutec)) as a six-day MVP
 
 ---
