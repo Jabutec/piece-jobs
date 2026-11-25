@@ -14,7 +14,10 @@ app = FastAPI(title="Piece Jobs API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # we add the live site later
+    allow_origins=[
+        "http://localhost:5173",
+        "https://piece-jobs.vercel.app/",
+    ],  # we add the live site later
     allow_methods=["*"],
     allow_headers=["*"],
 )
